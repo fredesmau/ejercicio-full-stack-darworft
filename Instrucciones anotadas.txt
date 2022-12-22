@@ -1,0 +1,139 @@
+Front--------
+
+create react app - npx create-react-app my-app se crea el frontend
+    npm start dentro del front - localhost 3000
+
+Borra header de App.js y puedo escribir en html. 
+Cambia nombre de App.js por App.jsx para que visual studio autocomplete palabras aunque funciona igual
+
+Hacer front 
+
+Borra App.test.js
+
+-------------
+
+Back-------
+
+    install nestjs - instala el cliente y despues crear la carpeta donde se crea el backend
+    npm start dentro del back - localhost 3000 - entra en conflicto con el puerto del front hay que cambiarlo
+
+hacer los cambios dentro del app.service.ts - ts toma el tipo que uses, si es string usa string, 
+any usa lo que sea, es mas general. Ver de cambiar any en app.service.ts y app.controller.ts
+
+si quiero ver los cambios en tiempo real hay que ver dentro de package.json  
+    "start:dev" 
+    (se pone npm run start:dev y lo corre) localhost 3000
+
+ver postman leer para que sirve ??????
+
+la idea del back es conectase a base de datos y devolver lo que nos dio
+
+app.service.ts es el servicio, el servicio se lo pasa al controller app.controller.ts
+
+    pasar path a app.controller.ts ????? preguntar si va en @Get o en @Controller(funciona en ambos)
+    path en -- @Get/@Controller("Aca va el path") ej: "items" es localhost:3000/items
+
+dejo backend ejecutandose y abre otra terminal aparte (puedo cambiar nombre de la terminal para diferenciar backend y frontend)
+
+ejecuto front de nuevo - coinciden los puertos asi que en la terminal me pregunta si quiero abrirlo en otro puerto, poner si
+
+listo - backend y frontend corriendo a la vez, funcionan. FALTA CONECTAR
+react rest api - react make rest call - axios es la mas usada/facil
+
+install axios - importante
+    npm install axios
+preguntar donde se instala axios (front o back)
+cuando instalo axios en front me dice que hay 6 vulnerabilidades severas- preguntar????
+
+en front poner import axios from "axios"; (arriba del todo bajo los imports de App.jsx)
+
+en app.jsx va el get de axios 
+
+        axios.get('http://localhost:3000/items')
+            .then(function (response) {
+            // handle success
+            console.log(response);
+            setItems(response.data);
+            });
+
+        axios.get('/items')
+            .then(function (response) {
+            // handle success
+            console.log(response);
+            setItems(response.data);
+            });
+
+        VER CUAL FUNCIONA
+
+
+ahi deberia salir error??? cual?
+
+sale error:
+    Access to XMLHttpRequest at 'http://localhost:3000/items' from origin 'http://localhost:3001' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+
+Solucionar con proxy - no permite entrar a otro puerto por temas de seguridad, es como si fuera otra direccion
+
+la idea es que el back corra la aplicaion (localhost 3000)
+
+en front armamos el build
+    npm run build
+pegar carpeta build dentro del back - se puede cambiar nombre para identificar - build_front
+
+
+instalar serve static- sirve para servir contenido static a la pagina 
+    npm install --save @nestjs/serve-static
+
+    Once the installation process is done, we can import the ServeStaticModule into the root AppModule and configure it by passing in a configuration object to the forRoot() method.
+
+     en app.module.ts
+        los imports y @Module con export
+        cambiar 'client' por el nombre de la carpeta del build creado antes
+
+npm run start:dev
+    ahora ya esta conectada la carpeta del build - puedo comprobarlo con
+    localhost:3000/logo192.png si lo trae ya funciona 
+
+    localhost:3000/index.html devuelve la app de react desde el back
+
+listo- ya funciona y esta conectado el back con el front. Para modificar el front hay que hacer npm run build desde el front y pegar la carpeta build en el back y cambiar el nombre que se puso
+
+    para no tener que hacer esto cada vez que quiero modificar:
+    proxy - redirige 
+        lo unico que se hace es agregar linea en package.json DEL FRONT :
+            "proxy": "http://localhost:3000",   --- (arriba de dependencies?)
+            y con eso funciona.
+            npm start y listo
+    
+        http://localhost:3001 corre la app final desde el front, conectada al back con proxy
+
+
+THE END
+
+https://create-react-app.dev
+
+https://reactjs.org/docs/components-and-props.html
+
+https://docs.nestjs.com
+
+https://www.npmjs.com/package/axios
+
+https://docs.nestjs.com/recipes/serve-static
+
+
+
+
+"recordarle a enzo porque tengo que usar readfilesync en vez del otro"
+
+
+https://desarrolloweb.com/articulos/lectura-archivos-nodejs.html
+
+
+
+    
+
+
+
+
+
+
+
